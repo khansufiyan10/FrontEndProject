@@ -16,7 +16,7 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	
 	<div class="container">
-	<form action="" method="" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 myclass">
+	<form action="/loginaction" method="" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 myclass">
 		<div class="form-group">
 			<label>Enter Username</label>
 			<input type="text" name="username" placeholder="Enter Username" class="form-control"/>

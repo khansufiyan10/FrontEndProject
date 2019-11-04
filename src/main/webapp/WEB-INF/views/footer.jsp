@@ -56,16 +56,16 @@
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">About</a>
+            <a href="#!">About US</a>
           </li>
           <li>
-            <a href="#!">Contact us</a>
+            <a href="#!">Contact US</a>
           </li>
           <li>
-            <a href="#!">queries</a>
+            <a href="#!">Queries</a>
           </li>
           <li>
-            <a href="#!">Link 4</a>
+            <a href="#!">HOME</a>
           </li>
         </ul>
 

@@ -28,7 +28,7 @@ a
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <a class="navbar-brand" href="#">MOBI</a>
+  <a class="navbar-brand" href="${pageContext.request.contextPath}/home">MOBI</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -38,10 +38,10 @@ a
         <a class="nav-link" href="${pageContext.request.contextPath}/home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/login"">Login</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/login">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/register"">Register</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/register">Register</a>
       </li>
       
     </ul>

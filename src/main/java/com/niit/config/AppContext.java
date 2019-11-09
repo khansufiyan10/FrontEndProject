@@ -53,27 +53,27 @@ public class AppContext extends WebMvcConfigurerAdapter
 		return resolver;
 	}
 	
-//	   @Override
-//	   public void addResourceHandlers(ResourceHandlerRegistry registry) 
-//	   {
-//	       registry.addResourceHandler("/images/**") 
-//	                 .addResourceLocations("/WEB-INF/resources/images/").setCachePeriod(31556926);
-//	       registry.addResourceHandler("/css/**") 
-//           			.addResourceLocations("/WEB-INF/resources/css/").setCachePeriod(31556926);
-//	       registry.addResourceHandler("/js/**") 
-//  					.addResourceLocations("/WEB-INF/resources/js/").setCachePeriod(31556926);
-//	       registry.addResourceHandler("/videos/**") 
-//					.addResourceLocations("/WEB-INF/resources/videos/").setCachePeriod(31556926);
-//	       registry.addResourceHandler("/data1/**") 
-//			.addResourceLocations("/WEB-INF/resources/data1/").setCachePeriod(31556926);
-//	       registry.addResourceHandler("/engine1/**") 
-//			.addResourceLocations("/WEB-INF/resources/engine1/").setCachePeriod(31556926);
-//	   }
-//	 
-//	    
-//	   @Override
-//	   public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) 
-//	   {
-//	       configurer.enable();
-//	   }
+	   @Override
+	   public void addResourceHandlers(ResourceHandlerRegistry registry) 
+	   {
+	       registry.addResourceHandler("/images/**") 
+	                 .addResourceLocations("/WEB-INF/resources/images/").setCachePeriod(31556926);
+	       registry.addResourceHandler("/css/**") 
+           			.addResourceLocations("/WEB-INF/resources/css/").setCachePeriod(31556926);
+	       registry.addResourceHandler("/js/**") 
+  					.addResourceLocations("/WEB-INF/resources/js/").setCachePeriod(31556926);
+	       registry.addResourceHandler("/videos/**") 
+					.addResourceLocations("/WEB-INF/resources/videos/").setCachePeriod(31556926);
+	       registry.addResourceHandler("/data1/**") 
+			.addResourceLocations("/WEB-INF/resources/data1/").setCachePeriod(31556926);
+	       registry.addResourceHandler("/engine1/**") 
+			.addResourceLocations("/WEB-INF/resources/engine1/").setCachePeriod(31556926);
+	   }
+	 
+	    
+	   @Override
+	   public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) 
+	   {
+	       configurer.enable();
+	   }
 }

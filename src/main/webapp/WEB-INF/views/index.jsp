@@ -1,6 +1,9 @@
 <html>
+<title>Index page</title>
 <body>
 <h2>Mobi World!</h2>
+
+
 
 <jsp:include page="header.jsp"></jsp:include>
 

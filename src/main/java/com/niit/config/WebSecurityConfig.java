@@ -40,10 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception 
   {
 	  http.authorizeRequests()
-      .antMatchers("/product/display").permitAll()
-      .antMatchers("/faq").permitAll()
-      .antMatchers("/ord").permitAll()
-      .antMatchers("/product/add").hasAuthority("ADMIN")
+	  .antMatchers("/resources/**").permitAll()
+     // .antMatchers("/product/add").hasAuthority("ADMIN")
       //.antMatchers("**/https://test.instamojo.com/**").permitAll()
       //.antMatchers("/**").hasAnyRole("ADMIN", "USER")
       .and().formLogin()

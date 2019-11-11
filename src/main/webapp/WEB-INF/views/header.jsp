@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     
     <%@page isELIgnored="false" %>
+ <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +35,7 @@ a
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
+      <sec:authorize access="!isAuthenticated()">
       <li class="nav-item active">
         <a class="nav-link" href="${pageContext.request.contextPath}/home">Home <span class="sr-only">(current)</span></a>
       </li>
@@ -43,6 +45,20 @@ a
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/register">Register</a>
       </li>
+       </sec:authorize>
+      <sec:authorize access="isAuthenticated()">
+      	<sec:authorize access="hasAuthority('admin') and isAuthenticated()">
+      		<li class="nav-item">
+	        <a class="nav-link" href="${pageContext.request.contextPath}/product/add">Add Product</a>
+    	  	</li>
+    	  </sec:authorize>
+      	<li class="nav-item">
+	        <a class="nav-link" href="${pageContext.request.contextPath}/product/display">Products</a>
+      	</li>
+      	<li class="nav-item">
+	        <a class="nav-link" href="${pageContext.request.contextPath}/logout">Logout</a>
+      	</li>
+      </sec:authorize>
       
     </ul>
   </div>

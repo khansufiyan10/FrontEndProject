@@ -24,6 +24,8 @@ public class ProductController
 	public String addProduct(ModelMap map)
 	{
 		
+
+		
 		map.addAttribute("product",new Product());
 		return "addproduct";
 		

@@ -1,29 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
-    <%@page isELIgnored="false" %>
+<%@page isELIgnored="false" %>
+ <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>eCommerce Product Detail</title>
+ 	<title>eCommerce Product Detail</title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 	<link href="css/displayproduct.css" rel="stylesheet">
 </head>
 <body>
-
-<jsp:include page="header.jsp"></jsp:include>	
-	<div class="container">
+	<jsp:include page="header.jsp"></jsp:include>	
+	<div class="container-fluid">
 		<div class="card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col-md-6">
-						
+			<div class="container-fluid">
+					<div class="row">
+					<div class="col-md-4 col-lg-4 col-sm-6 col-xs-6">
 						<div class="preview-pic tab-content">
-						  <div class="tab-pane active" id="pic-1"><img src="http://placekitten.com/400/252" /></div>
+						  <div class="tab-pane active" id="pic-1"><img src="http://placekitten.com/400/252" class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="height:250px"/></div>
+						  <!-- 
 						  <div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
 						  <div class="tab-pane" id="pic-3"><img src="http://placekitten.com/400/252" /></div>
 						  <div class="tab-pane" id="pic-4"><img src="http://placekitten.com/400/252" /></div>
@@ -36,9 +34,10 @@
 						  <li><a data-target="#pic-4" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a></li>
 						  <li><a data-target="#pic-5" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a></li>
 						</ul>
-						
+						 -->
 					</div>
-					<div class="details col-md-6">
+					</div>
+					<div class="col-md-4 col-lg-4 col-sm-6 col-xs-6">
 						<h3 class="product-title">${product.productname}</h3>
 						<div class="rating">
 							<div class="stars">
@@ -64,16 +63,19 @@
 							<span class="color green"></span>
 							<span class="color blue"></span>
 						</h5>
-						<div class="action">
-							<button class="add-to-cart btn btn-primary" type="button">add to cart</button>
-							<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
 						</div>
-					</div>
+						<div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+								<sec:authorize access="hasAuthority('admin') and isAuthenticated()">
+									<a href="${pageContext.request.contextPath}/product/edit/${product.productid}" class="btn btn-primary btn-block" type="button">Edit</a>							
+									<a href="${pageContext.request.contextPath}/product/delete/${product.productid}" class="btn btn-danger btn-block" type="button">Delete</a>
+								</sec:authorize>						
+								<a href="${pageContext.request.contextPath}/cartitem/add/${product.productid}" class="btn btn-secondary btn-block" >Add To Cart</a>
+								<a href="${pageContext.request.contextPath}/product/buy/${product.productid}"  class="btn btn-warning btn-block" type="button">Buy</a>
+						</div>
+				</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	<jsp:include page="footer.jsp"></jsp:include>
-
 </body>
 </html>

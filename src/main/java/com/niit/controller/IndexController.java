@@ -10,28 +10,24 @@ import com.niit.dao.UserDAO;
 import com.niit.model.User;
 
 @Controller
-public class IndexController
-
+public class IndexController 
 {
-
 	@Autowired
 	UserDAO userDAO;
 	
 	@RequestMapping(value= {"/home","","/"})
 	public String m1()
 	{
-	return "index";
+		return "index";
 	}
-
-		@RequestMapping(value= {"/register"})
+	
+	@RequestMapping(value= {"/register"})
 	public String m2(ModelMap map)
 	{
 		User u=new User();
-		map.addAttribute("user",u);
-		
+		map.addAttribute("user", u);
 		return "register";
 	}
-	
 	
 	@RequestMapping(value= {"/registercontroller"})
 	public String m3(@ModelAttribute("user") User user)
@@ -44,6 +40,5 @@ public class IndexController
 	public String m4()
 	{
 		return "login";
-	}
-	
+	}	
 }

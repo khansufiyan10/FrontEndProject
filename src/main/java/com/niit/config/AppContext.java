@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -57,17 +56,18 @@ public class AppContext extends WebMvcConfigurerAdapter
 	   public void addResourceHandlers(ResourceHandlerRegistry registry) 
 	   {
 	       registry.addResourceHandler("/images/**") 
-	                 .addResourceLocations("/WEB-INF/resources/images/").setCachePeriod(31556926);
+	                 .addResourceLocations("/WEB-INF/resources/images/");
 	       registry.addResourceHandler("/css/**") 
-           			.addResourceLocations("/WEB-INF/resources/css/").setCachePeriod(31556926);
+           			.addResourceLocations("/WEB-INF/resources/css/");
 	       registry.addResourceHandler("/js/**") 
-  					.addResourceLocations("/WEB-INF/resources/js/").setCachePeriod(31556926);
+  					.addResourceLocations("/WEB-INF/resources/js/");
 	       registry.addResourceHandler("/videos/**") 
-					.addResourceLocations("/WEB-INF/resources/videos/").setCachePeriod(31556926);
+					.addResourceLocations("/WEB-INF/resources/videos/");
 	       registry.addResourceHandler("/data1/**") 
-			.addResourceLocations("/WEB-INF/resources/data1/").setCachePeriod(31556926);
+			.addResourceLocations("/WEB-INF/resources/data1/");
 	       registry.addResourceHandler("/engine1/**") 
-			.addResourceLocations("/WEB-INF/resources/engine1/").setCachePeriod(31556926);
+			.addResourceLocations("/WEB-INF/resources/engine1/");
+	       registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/*");
 	   }
 	 
 	    

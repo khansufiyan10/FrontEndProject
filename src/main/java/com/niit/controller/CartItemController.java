@@ -1,15 +1,24 @@
 package com.niit.controller;
 
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.instamojo.wrapper.api.ApiContext;
+import com.instamojo.wrapper.api.Instamojo;
+import com.instamojo.wrapper.api.InstamojoImpl;
+import com.instamojo.wrapper.model.PaymentOrder;
+import com.instamojo.wrapper.model.PaymentOrderResponse;
 import com.niit.dao.CartItemDAO;
 import com.niit.dao.ProductDAO;
 import com.niit.dao.UserDAO;
@@ -56,7 +65,7 @@ public class CartItemController
 		}
 		else
 		{
-			System.out.println("Cart Item NOt Added");
+			System.out.println("Cart Item Not Added");
 		}
 		
 		return "redirect:/cartitem/display";
@@ -71,8 +80,14 @@ public class CartItemController
 		cartItem.setCartitemid(cartitemid);
 		
 		cartItemDAO.deleteCart(cartItem);
+		System.out.println("abc");
 		return "redirect:/cartitem/display";
+		
 	}
+	
+
+ 
+	
 	
 	@RequestMapping("/disp/{id}")
 	public String displayProduct(@PathVariable("id") int cartitemid, ModelMap map)

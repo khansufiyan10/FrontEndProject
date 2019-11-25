@@ -28,7 +28,7 @@
     <ul class="navbar-nav mr-auto">
     <sec:authorize access="isAuthenticated()">
     	<li class="nav-item active">
-    		<a class="nav-link" href="#">Welcome <sec:authentication property="principal.username" /></a>
+    		<a class="nav-link" href="index.jsp">Welcome <sec:authentication property="principal.username" /></a>
     	</li> 
 	</sec:authorize>
     <sec:authorize access="!isAuthenticated()">

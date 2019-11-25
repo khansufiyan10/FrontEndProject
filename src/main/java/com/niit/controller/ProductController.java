@@ -1,10 +1,13 @@
 package com.niit.controller;
 
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,30 +38,34 @@ public class ProductController
 	UserDAO userDAO;
 	
 	
-	@GetMapping("/buy")
-	public void buyProduct(@PathVariable("userid") int userid,HttpServletResponse resp)
+	@GetMapping("/buy/{productid}")
+	public void buyProduct(@PathVariable("productid") int productid,HttpServletResponse resp)
 	{
-	   User user=new User();
-	   user.setUserid(userid);
-		
-	   user=userDAO.displayUserByUserName(user);
-       try 
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		User u=null;
+		if (principal instanceof UserDetails) 
+		{
+		  UserDetails user= ((UserDetails)principal);
+		  u=new User();
+		  u.setUsername(user.getUsername());
+		  u=userDAO.displayUserByUserName(u);
+		}
+	   try 
        {
            ApiContext context = ApiContext.create("test_mcSWiM9Y6RFa47eI3Kf7XgBiB2pgQl7ZjSM", "test_kDuEe7A28eQM6m5XuwaDfAOOV4QARRR1aIWH8LC3K7HnEwJglym8fTXpJa988EvAmWvJUEFx8RyboaTizIAaRvbSJ97JmcNFYbYWy1Z5lbU6y1pgUkZxmsUCpSO", ApiContext.Mode.TEST);
            Instamojo api = new InstamojoImpl(context);
 
            PaymentOrder order = new PaymentOrder();
-           order.setName(user.getUsername());
-           order.setEmail(user.getEmail());
-           order.setPhone("7977518582");
+           order.setName(u.getUsername());
+           order.setEmail(u.getEmail());
+           order.setPhone(u.getMobile());
            order.setCurrency("INR");
            order.setAmount((double)11);
            order.setDescription("This is a test transaction.");
            order.setRedirectUrl("https://7d6965f7.ngrok.io/LibraryDemo/displaybooks.jsp");
            order.setWebhookUrl("https://7d6965f7.ngrok.io/LibraryDemo/");
-           Random r=new Random();
-           int ra=r.nextInt(999999);
-           order.setTransactionId(ra+"");
+           order.setTransactionId(UUID.randomUUID().toString());
 
            PaymentOrderResponse paymentOrderResponse = api.createPaymentOrder(order);
            resp.sendRedirect(paymentOrderResponse.getPaymentOptions().getPaymentUrl());
@@ -67,7 +74,7 @@ public class ProductController
        {
            System.out.println(e);
        }
-	}
+	} 
 	
 	@GetMapping("/add")
 	public String addProduct(ModelMap map)
@@ -121,8 +128,8 @@ public class ProductController
 	}
 
 	
-	@RequestMapping("/delete/{productid}")
-	public String deleteProduct(@PathVariable("productid") int productid)
+	@RequestMapping("/delete/{id}")
+	public String deleteProduct(@PathVariable("id") int productid)
 	{
 		Product p=new Product();
 		p.setProductid(productid);

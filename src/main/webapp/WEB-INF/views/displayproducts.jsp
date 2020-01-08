@@ -1,12 +1,10 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-       <%@page isELIgnored="false" %>
+    <%@page isELIgnored="false" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
 <html>
 <head>
-
-<meta charset="ISO-8859-1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -49,9 +47,9 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 @media only screen and (max-width:990px){.product-grid{margin-bottom:30px}
 }
 </Style>
+
 </head>
 <body>
-
 <jsp:include page="header.jsp"></jsp:include>
 <div class="container">
     <h3 class="h3">shopping Demo-1 </h3>
@@ -62,8 +60,7 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
             <div class="product-grid">
                 <div class="product-image">
                     <a href="${pageContext.request.contextPath}/product/display/${product.productid}">
-                        <img class="pic-1" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-1.jpg">
-                        <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg">
+                        <img class="pic-1" src="<c:url value="/images/${product.productid}/${product.imageurl}"/>">
                     </a>
                     <ul class="social">
                         <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>
@@ -88,8 +85,6 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
                         <span>Rs. ${product.price}</span>
                         
                     </div>
-                    <a class="btn btn-primary btn-block" href="">Add To Cart</a>
-                    <a class="btn btn-danger btn-block" href="">Buy</a>
                 </div>
             </div>
             <hr>
@@ -98,6 +93,5 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
        </div>
 </div>
 <jsp:include page="footer.jsp"></jsp:include>
-
 </body>
 </html>

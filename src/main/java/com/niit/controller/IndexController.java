@@ -37,7 +37,7 @@ public class IndexController
 	}
 	
 	@RequestMapping(value= {"/login"})
-	public String m4()
+	public String m3()
 	{
 		return "login";
 	}	

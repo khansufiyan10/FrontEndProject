@@ -1,13 +1,16 @@
 package com.niit.controller;
 
-import java.util.Random;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.instamojo.wrapper.api.ApiContext;
-import com.instamojo.wrapper.api.Instamojo;
-import com.instamojo.wrapper.api.InstamojoImpl;
-import com.instamojo.wrapper.model.PaymentOrder;
-import com.instamojo.wrapper.model.PaymentOrderResponse;
 import com.niit.dao.ProductDAO;
 import com.niit.dao.UserDAO;
 import com.niit.model.Product;
-import com.niit.model.User;
 
 @Controller
 @RequestMapping("/product")
@@ -37,44 +35,34 @@ public class ProductController
 	@Autowired
 	UserDAO userDAO;
 	
-	
-	@GetMapping("/buy/{productid}")
-	public void buyProduct(@PathVariable("productid") int productid,HttpServletResponse resp)
+		
+	public List<String> displayImage(int productid)
 	{
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		User u=null;
-		if (principal instanceof UserDetails) 
+		List<String> images=new ArrayList();
+		
+		try
 		{
-		  UserDetails user= ((UserDetails)principal);
-		  u=new User();
-		  u.setUsername(user.getUsername());
-		  u=userDAO.displayUserByUserName(u);
+			String path="D:\\Eclipse Projects\\dtfrontend\\src\\main\\webapp\\WEB-INF\\resources\\images";
+			Path p=Paths.get(path+productid);
+			DirectoryStream<Path> files=Files.newDirectoryStream(p,"*.*");
+			
+			for(Path file:files)
+			{
+//				FileInputStream fis=new FileInputStream(file.toString());
+//				byte[] arr=new byte[fis.available()];
+//				fis.read(arr);
+				
+				images.add(file.getFileName().toString());
+			}
+			
 		}
-	   try 
-       {
-           ApiContext context = ApiContext.create("test_mcSWiM9Y6RFa47eI3Kf7XgBiB2pgQl7ZjSM", "test_kDuEe7A28eQM6m5XuwaDfAOOV4QARRR1aIWH8LC3K7HnEwJglym8fTXpJa988EvAmWvJUEFx8RyboaTizIAaRvbSJ97JmcNFYbYWy1Z5lbU6y1pgUkZxmsUCpSO", ApiContext.Mode.TEST);
-           Instamojo api = new InstamojoImpl(context);
-
-           PaymentOrder order = new PaymentOrder();
-           order.setName(u.getUsername());
-           order.setEmail(u.getEmail());
-           order.setPhone(u.getMobile());
-           order.setCurrency("INR");
-           order.setAmount((double)11);
-           order.setDescription("This is a test transaction.");
-           order.setRedirectUrl("https://7d6965f7.ngrok.io/LibraryDemo/displaybooks.jsp");
-           order.setWebhookUrl("https://7d6965f7.ngrok.io/LibraryDemo/");
-           order.setTransactionId(UUID.randomUUID().toString());
-
-           PaymentOrderResponse paymentOrderResponse = api.createPaymentOrder(order);
-           resp.sendRedirect(paymentOrderResponse.getPaymentOptions().getPaymentUrl());
-       }
-       catch (Exception e) 
-       {
-           System.out.println(e);
-       }
-	} 
+		catch (Exception e) 
+		{
+			System.out.println(e);
+		}
+		return images;
+	}
 	
 	@GetMapping("/add")
 	public String addProduct(ModelMap map)
@@ -84,16 +72,61 @@ public class ProductController
 	}
 
 	@PostMapping("/add")
-	public String storeProduct(@ModelAttribute("product") Product product)
+	public String storeProduct(@ModelAttribute("product") Product product,@RequestParam("productimage") MultipartFile productImage)
 	{
 		productDAO.addProduct(product);
+		String path="D:\\Eclipse Projects\\dtfrontend\\src\\main\\webapp\\WEB-INF\\resources\\images";
+		Path p=Paths.get(path+product.getProductid());
+		if (!Files.exists(p))
+		{    
+			try
+			{
+				Files.createDirectory(p);
+				System.out.println("Directory created");
+			}
+			catch (Exception e) 
+			{
+				System.out.println(e);
+			}
+        }
+		
+		List<String> files=displayImage(product.getProductid());
+		
+		path=String.valueOf(p.toString()+"\\"+(files.size()+1)+".jpg");
+		System.out.println(path);
+		File imageFile=new File(path);
+		
+		if(!productImage.isEmpty())
+		{
+			try
+			{
+				byte buffer[]=productImage.getBytes();
+				FileOutputStream fos=new FileOutputStream(imageFile);
+				BufferedOutputStream bos=new BufferedOutputStream(fos);
+				bos.write(buffer);
+				bos.close();
+			}
+			catch (Exception e) 
+			{
+				System.out.println(e);
+			}
+		}
 		return "redirect:/product/display";
 	}
 	
 	@RequestMapping("/display")
 	public String displayProducts(ModelMap map)
 	{
-		map.addAttribute("products",productDAO.displayProducts());
+		List<Product> products=new ArrayList<Product>();
+		List<String> images=new ArrayList<String>();
+		for(Product p:productDAO.displayProducts())
+		{
+			List<String> im=displayImage(p.getProductid());
+			if(!im.isEmpty())
+			p.setImageurl(im.get(0));	
+			products.add(p);
+		}
+		map.addAttribute("products",products);
 		return "displayproducts";
 	}
 	
@@ -123,13 +156,15 @@ public class ProductController
 	{
 		Product product=new Product();
 		product.setProductid(productid);
+		List<String> images=displayImage(productid);
 		map.addAttribute("product",productDAO.displayProductById(product));
+		map.addAttribute("images",images);
 		return "displayproduct";
 	}
 
 	
-	@RequestMapping("/delete/{id}")
-	public String deleteProduct(@PathVariable("id") int productid)
+	@RequestMapping("/delete/{productid}")
+	public String deleteProduct(@PathVariable("productid") int productid)
 	{
 		Product p=new Product();
 		p.setProductid(productid);
